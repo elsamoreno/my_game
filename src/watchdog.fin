@@ -1,0 +1,27 @@
+const DEBUG_BASE : u32 = 0x80000000;
+const DSU_CTRL_OFFSET : u32 = 0x00;
+const DSU_STATUS_OFFSET : u32 = 0x04;
+const DSU_CTRL_RESET : u32 = 0x01;
+
+
+task class WATCHDOG {
+
+    timer_ev : sink TimeVal triggers reboot_system;
+
+    register : loc u32;
+
+    action reboot_system(&mut self, _current_time : TimeVal) -> Result {
+
+        var ret : Result = Result::Ok;
+
+        var ctrl_reg : u32 = self->register;
+
+        ctrl_reg = ctrl_reg | DSU_CTRL_RESET;
+
+        self->register = ctrl_reg;
+
+
+        return ret;
+
+    }
+};

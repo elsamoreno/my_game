@@ -1,0 +1,11 @@
+
+import watchdog;
+
+emitter timer : PeriodicTimer = {
+    period = {tv_sec = 10 : u32, tv_usec = 0 : u32} : TimeVal
+} : PeriodicTimer;
+
+task watchdog_instance : WATCHDOG = {
+    timer_ev <- timer,
+    register @ 0x80000000
+} : WATCHDOG;
